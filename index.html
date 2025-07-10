@@ -15,14 +15,261 @@
   <link rel="apple-touch-icon" href="icon.png">
 
   <style>
-    /* ... (gaya CSS kamu tidak berubah, sudah dimasukkan sebelumnya) ... */
+    body {
+      font-family: 'Comic Neue', cursive;
+      background-image: url('12345.jpg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      color: #444;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+      overflow-x: hidden;
+    }
+    .container {
+      max-width: 500px;
+      margin: auto;
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.85);
+      border-radius: 20px;
+      box-shadow: 0 0 15px rgba(255, 192, 203, 0.6);
+      margin-top: 30px;
+      animation: fadeSlideDown 1s ease-out;
+    }
+    @keyframes fadeSlideDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    h2 {
+      color: #d63384;
+      font-size: 24px;
+      animation: fadeIn 1.2s ease-in;
+    }
+    @keyframes fadeIn {
+      from {opacity: 0;}
+      to {opacity: 1;}
+    }
+    label, input[type="date"] {
+      animation: softAppear 0.8s ease-in;
+    }
+    @keyframes softAppear {
+      from {opacity: 0; transform: scale(0.95);}
+      to {opacity: 1; transform: scale(1);}
+    }
+    .hidden { display: none; }
+    label {
+      display: block;
+      margin: 10px 0 5px;
+      text-align: left;
+    }
+    .routine-section {
+      margin: 20px 0;
+      text-align: left;
+    }
+    input[type="checkbox"] {
+      margin-right: 10px;
+    }
+    button {
+      padding: 10px 20px;
+      background-color: #ff66a3;
+      border: none;
+      border-radius: 10px;
+      color: white;
+      cursor: pointer;
+      margin: 10px 5px 0;
+      transition: transform 0.1s ease;
+    }
+    button:active {
+      transform: scale(1.05);
+      animation: bounce 0.3s ease-in-out;
+    }
+    @keyframes bounce {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+      100% { transform: scale(1); }
+    }
+    button:hover {
+      background-color: #e05592;
+    }
+    ul {
+      padding-left: 20px;
+      text-align: left;
+    }
+    .missed {
+      color: red;
+      font-weight: bold;
+    }
+    .emoji {
+      position: absolute;
+      font-size: 24px;
+      opacity: 0;
+      animation: floatUp 2s ease-in-out forwards;
+      pointer-events: none;
+    }
+    @keyframes floatUp {
+      0% { opacity: 1; transform: translateY(0) scale(1); }
+      100% { opacity: 0; transform: translateY(-100px) scale(1.5); }
+    }
   </style>
 </head>
 <body>
-  <!-- ... (HTML isi tetap sama seperti sebelumnya) ... -->
+  <div class="container">
+    <h2>✨ Skincare Routine Harian ✨</h2>
 
+    <label for="date">Pilih Tanggal:</label>
+    <input type="date" id="datePicker" />
+    <div>
+      <button id="toggleBtn" onclick="toggleRoutine()">Tampilkan</button>
+      <button id="rekapBtn" onclick="toggleMonthlyRecap()">Rekap Bulanan</button>
+    </div>
+
+    <div id="routineList" class="hidden">
+      <div class="routine-section">
+        <strong>🌞 Morning</strong><br>
+        <label><input type="checkbox" id="morning1"> Facial Wash</label>
+        <label><input type="checkbox" id="morning2"> Serum Brightening</label>
+        <label><input type="checkbox" id="morning3"> Moisturizer</label>
+        <label><input type="checkbox" id="morning4"> Sunscreen</label>
+      </div>
+
+      <div class="routine-section">
+        <strong>🌙 Night</strong><br>
+        <label><input type="checkbox" id="night1"> Double cleansing (micellar + facial wash)</label>
+        <label><input type="checkbox" id="night2"> Peeling Serum (3x/minggu)</label>
+        <label><input type="checkbox" id="night3"> Eye Serum (3x/minggu)</label>
+        <label><input type="checkbox" id="night4"> Moisturizer</label>
+      </div>
+    </div>
+
+    <div id="monthlyRecap" class="routine-section hidden"></div>
+  </div>
   <script>
-    // Script JavaScript kamu seperti sebelumnya...
+    const routineLabels = {
+      morning1: "Facial Wash",
+      morning2: "Serum Brightening",
+      morning3: "Moisturizer (Pagi)",
+      morning4: "Sunscreen",
+      night1: "Double Cleansing",
+      night2: "Peeling Serum",
+      night3: "Eye Serum",
+      night4: "Moisturizer (Malam)"
+    };
+
+    function toggleRoutine() {
+      const date = document.getElementById("datePicker").value;
+      const list = document.getElementById("routineList");
+      const toggleBtn = document.getElementById("toggleBtn");
+
+      if (!date) {
+        alert("Silakan pilih tanggal terlebih dahulu!");
+        return;
+      }
+
+      const isHidden = list.classList.contains("hidden");
+
+      if (isHidden) {
+        loadChecklist(date);
+        list.classList.remove("hidden");
+        toggleBtn.textContent = "Sembunyikan";
+        spawnEmoji("💗");
+      } else {
+        list.classList.add("hidden");
+        toggleBtn.textContent = "Tampilkan";
+      }
+    }
+
+    function loadChecklist(date) {
+      const saved = JSON.parse(localStorage.getItem("skincare_" + date)) || {};
+      Object.keys(routineLabels).forEach(id => {
+        document.getElementById(id).checked = saved[id] || false;
+        document.getElementById(id).onchange = () => saveChecklist(date);
+      });
+    }
+
+    function saveChecklist(date) {
+      const ids = Object.keys(routineLabels);
+      const data = {};
+      let hasAny = false;
+      ids.forEach(id => {
+        const checked = document.getElementById(id).checked;
+        data[id] = checked;
+        if (checked) hasAny = true;
+      });
+
+      if (hasAny) {
+        localStorage.setItem("skincare_" + date, JSON.stringify(data));
+      } else {
+        localStorage.removeItem("skincare_" + date);
+      }
+    }
+
+    function toggleMonthlyRecap() {
+      const recapDiv = document.getElementById("monthlyRecap");
+      const rekapBtn = document.getElementById("rekapBtn");
+
+      if (!recapDiv.classList.contains("hidden")) {
+        recapDiv.classList.add("hidden");
+        rekapBtn.textContent = "Rekap Bulanan";
+        return;
+      }
+
+      showMonthlyRecap();
+      rekapBtn.textContent = "Sembunyikan Rekap";
+      spawnEmoji("💕");
+    }
+
+    function showMonthlyRecap() {
+      const now = new Date();
+      const month = now.toISOString().slice(0, 7);
+      const color1 = "#ffe4ec";
+      const color2 = "#ffc1d6";
+      let useFirstColor = true;
+      let output = `<strong>Rekap Bulan ${month}</strong><br>`;
+      let foundData = false;
+
+      for (let i = 1; i <= 31; i++) {
+        const day = i.toString().padStart(2, '0');
+        const dateKey = `${month}-${day}`;
+        const data = JSON.parse(localStorage.getItem("skincare_" + dateKey));
+        if (data) {
+          const anyChecked = Object.values(data).some(v => v === true);
+          if (!anyChecked) continue;
+
+          const bgColor = useFirstColor ? color1 : color2;
+          useFirstColor = !useFirstColor;
+          foundData = true;
+
+          output += `<div style="background-color:${bgColor}; padding:10px; margin-top:10px; border-radius:10px;">`;
+          output += `<strong>Tanggal ${day}</strong><ul>`;
+          for (let key in routineLabels) {
+            const label = routineLabels[key];
+            output += data[key]
+              ? `<li>${label}</li>`
+              : `<li class="missed">${label} (belum dilakukan)</li>`;
+          }
+          output += `</ul></div>`;
+        }
+      }
+
+      const recapDiv = document.getElementById("monthlyRecap");
+      recapDiv.innerHTML = foundData ? output : "Tidak ada data untuk bulan ini.";
+      recapDiv.classList.remove("hidden");
+    }
+
+    function spawnEmoji(emoji) {
+      const emojiEl = document.createElement("div");
+      emojiEl.className = "emoji";
+      emojiEl.style.left = Math.random() * 90 + "%";
+      emojiEl.style.top = "60%";
+      emojiEl.textContent = emoji;
+      document.body.appendChild(emojiEl);
+
+      setTimeout(() => {
+        emojiEl.remove();
+      }, 2000);
+    }
 
     // Tambahkan ini di akhir script
     if ('serviceWorker' in navigator) {
