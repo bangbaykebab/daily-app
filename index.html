@@ -1,1 +1,105 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Daily Routine</title>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#ffffff">
+  <link rel="icon" href="icons/icon-192.png" sizes="192x192">
+  <style>
+    body { font-family: 'Georgia', serif; padding: 20px; background: #fffdf9; }
+    h1 { text-align: center; font-size: 2em; margin-bottom: 10px; }
+    h2 { margin-top: 30px; font-size: 1.5em; color: #333; }
+    table { width: 100%; border-collapse: collapse; margin-bottom: 30px; }
+    th, td { border: 1px solid #ddd; text-align: center; padding: 6px; font-size: 0.85em; }
+    th { background: #f7f7f7; font-weight: bold; }
+    td.time { white-space: nowrap; background: #fcfcfc; }
+    td.task { text-align: left; background: #fcfcfc; }
+    input[type="checkbox"] { transform: scale(1.1); }
+  </style>
+</head>
+<body>
 
+  <h1>Daily Routine</h1>
+  <p style="text-align: center;">(Checklist Harian – disimpan otomatis)</p>
+  <div id="routineContainer"></div>
+
+  <script>
+    const days = Array.from({ length: 30 }, (_, i) => i + 1);
+    const routines = {
+      "Morning (04.30 – 12.00)": [
+        ["04.30 – 05.30", "Sholat Subuh, dzikir pagi, baca Qur’an"],
+        ["05.30 – 06.30", "Mandi pagi dan olahraga ringan"],
+        ["06.30 – 07.30", "Sarapan dan minum air putih"],
+        ["07.30 – 09.00", "Trading Pagi (analisa dan entry)"],
+        ["09.00 – 11.30", "Aktivitas produktif (belajar atau kerja ringan)"],
+        ["11.30 – 12.00", "Persiapan Sholat Dzuhur"]
+      ],
+      "Afternoon (12.00 – 17.30)": [
+        ["12.00 – 13.00", "Sholat Dzuhur dan makan siang"],
+        ["13.00 – 14.30", "Tidur siang"],
+        ["14.30 – 15.30", "Aktivitas santai produktif"],
+        ["15.30 – 16.00", "Sholat Ashar"],
+        ["16.00 – 16.30", "Mandi sore"],
+        ["16.30 – 17.30", "Trading Sore (eksekusi dan catatan hasil)"]
+      ],
+      "Evening (17.30 – 21.30)": [
+        ["17.30 – 18.30", "Santai atau refleksi pribadi"],
+        ["18.30 – 19.30", "Sholat Maghrib, dzikir, dan makan malam"],
+        ["19.30 – 20.00", "Sholat Isya"],
+        ["20.00 – 21.00", "Jurnal harian (trading dan refleksi diri)"],
+        ["21.00 – 21.30", "Relaksasi tanpa gadget"],
+        ["21.30 – 04.30", "Tidur malam"]
+      ]
+    };
+
+    const savedChecks = JSON.parse(localStorage.getItem('dailyRoutineChecks') || '{}');
+    const container = document.getElementById('routineContainer');
+
+    Object.entries(routines).forEach(([title, activities]) => {
+      const section = document.createElement('section');
+      const h2 = document.createElement('h2');
+      h2.textContent = title;
+      section.appendChild(h2);
+
+      const table = document.createElement('table');
+      const thead = document.createElement('thead');
+      const headRow = document.createElement('tr');
+      headRow.innerHTML = `<th>Waktu</th><th>Aktivitas</th>` + days.map(d => `<th>${d}</th>`).join('');
+      thead.appendChild(headRow);
+      table.appendChild(thead);
+
+      const tbody = document.createElement('tbody');
+      activities.forEach(([time, task], i) => {
+        const row = document.createElement('tr');
+        row.innerHTML = `<td class="time">${time}</td><td class="task">${task}</td>`;
+        days.forEach(day => {
+          const cell = document.createElement('td');
+          const checkbox = document.createElement('input');
+          const key = `${title}-${i}-${day}`;
+          checkbox.type = 'checkbox';
+          checkbox.checked = !!savedChecks[key];
+          checkbox.addEventListener('change', () => {
+            savedChecks[key] = checkbox.checked;
+            localStorage.setItem('dailyRoutineChecks', JSON.stringify(savedChecks));
+          });
+          cell.appendChild(checkbox);
+          row.appendChild(cell);
+        });
+        tbody.appendChild(row);
+      });
+
+      table.appendChild(tbody);
+      section.appendChild(table);
+      container.appendChild(section);
+    });
+
+    // PWA SW
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('service-worker.js')
+        .then(() => console.log('Service Worker Registered'));
+    }
+  </script>
+</body>
+</html>
