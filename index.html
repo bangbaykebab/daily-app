@@ -3,278 +3,102 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Checklist Skincare Ceria</title>
-
-  <!-- Font & PWA -->
-  <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap" rel="stylesheet">
-  <link rel="manifest" href="manifest.json" />
-  <meta name="theme-color" content="#ff66a3" />
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-title" content="Skincare Ceria">
-  <meta name="apple-mobile-web-app-status-bar-style" content="default">
-  <link rel="apple-touch-icon" href="icon.png">
-
+  <title>Daily Routine</title>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#ffffff">
+  <link rel="icon" href="icons/icon-192.png" sizes="192x192">
   <style>
-    body {
-      font-family: 'Comic Neue', cursive;
-      background-image: url('12345.jpg');
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-      background-attachment: fixed;
-      color: #444;
-      margin: 0;
-      padding: 0;
-      text-align: center;
-      overflow-x: hidden;
-    }
-    .container {
-      max-width: 500px;
-      margin: auto;
-      padding: 20px;
-      background: rgba(255, 255, 255, 0.85);
-      border-radius: 20px;
-      box-shadow: 0 0 15px rgba(255, 192, 203, 0.6);
-      margin-top: 30px;
-      animation: fadeSlideDown 1s ease-out;
-    }
-    @keyframes fadeSlideDown {
-      from { opacity: 0; transform: translateY(-20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    h2 {
-      color: #d63384;
-      font-size: 24px;
-      animation: fadeIn 1.2s ease-in;
-    }
-    @keyframes fadeIn {
-      from {opacity: 0;}
-      to {opacity: 1;}
-    }
-    label, input[type="date"] {
-      animation: softAppear 0.8s ease-in;
-    }
-    @keyframes softAppear {
-      from {opacity: 0; transform: scale(0.95);}
-      to {opacity: 1; transform: scale(1);}
-    }
-    .hidden { display: none; }
-    label {
-      display: block;
-      margin: 10px 0 5px;
-      text-align: left;
-    }
-    .routine-section {
-      margin: 20px 0;
-      text-align: left;
-    }
-    input[type="checkbox"] {
-      margin-right: 10px;
-    }
-    button {
-      padding: 10px 20px;
-      background-color: #ff66a3;
-      border: none;
-      border-radius: 10px;
-      color: white;
-      cursor: pointer;
-      margin: 10px 5px 0;
-      transition: transform 0.1s ease;
-    }
-    button:active {
-      transform: scale(1.05);
-      animation: bounce 0.3s ease-in-out;
-    }
-    @keyframes bounce {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.1); }
-      100% { transform: scale(1); }
-    }
-    button:hover {
-      background-color: #e05592;
-    }
-    ul {
-      padding-left: 20px;
-      text-align: left;
-    }
-    .missed {
-      color: red;
-      font-weight: bold;
-    }
-    .emoji {
-      position: absolute;
-      font-size: 24px;
-      opacity: 0;
-      animation: floatUp 2s ease-in-out forwards;
-      pointer-events: none;
-    }
-    @keyframes floatUp {
-      0% { opacity: 1; transform: translateY(0) scale(1); }
-      100% { opacity: 0; transform: translateY(-100px) scale(1.5); }
-    }
+    body { font-family: 'Georgia', serif; padding: 20px; background: #fffdf9; }
+    h1 { text-align: center; font-size: 2em; margin-bottom: 10px; }
+    h2 { margin-top: 30px; font-size: 1.5em; color: #333; }
+    table { width: 100%; border-collapse: collapse; margin-bottom: 30px; }
+    th, td { border: 1px solid #ddd; text-align: center; padding: 6px; font-size: 0.85em; }
+    th { background: #f7f7f7; font-weight: bold; }
+    td.time { white-space: nowrap; background: #fcfcfc; }
+    td.task { text-align: left; background: #fcfcfc; }
+    input[type="checkbox"] { transform: scale(1.1); }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h2>✨ Skincare Routine Harian ✨</h2>
 
-    <label for="date">Pilih Tanggal:</label>
-    <input type="date" id="datePicker" />
-    <div>
-      <button id="toggleBtn" onclick="toggleRoutine()">Tampilkan</button>
-      <button id="rekapBtn" onclick="toggleMonthlyRecap()">Rekap Bulanan</button>
-    </div>
+  <h1>Daily Routine</h1>
+  <p style="text-align: center;">(Checklist Harian – disimpan otomatis)</p>
+  <div id="routineContainer"></div>
 
-    <div id="routineList" class="hidden">
-      <div class="routine-section">
-        <strong>🌞 Morning</strong><br>
-        <label><input type="checkbox" id="morning1"> Facial Wash</label>
-        <label><input type="checkbox" id="morning2"> Serum Brightening</label>
-        <label><input type="checkbox" id="morning3"> Moisturizer</label>
-        <label><input type="checkbox" id="morning4"> Sunscreen</label>
-      </div>
-
-      <div class="routine-section">
-        <strong>🌙 Night</strong><br>
-        <label><input type="checkbox" id="night1"> Double cleansing (micellar + facial wash)</label>
-        <label><input type="checkbox" id="night2"> Peeling Serum (3x/minggu)</label>
-        <label><input type="checkbox" id="night3"> Eye Serum (3x/minggu)</label>
-        <label><input type="checkbox" id="night4"> Moisturizer</label>
-      </div>
-    </div>
-
-    <div id="monthlyRecap" class="routine-section hidden"></div>
-  </div>
   <script>
-    const routineLabels = {
-      morning1: "Facial Wash",
-      morning2: "Serum Brightening",
-      morning3: "Moisturizer (Pagi)",
-      morning4: "Sunscreen",
-      night1: "Double Cleansing",
-      night2: "Peeling Serum",
-      night3: "Eye Serum",
-      night4: "Moisturizer (Malam)"
+    const days = Array.from({ length: 30 }, (_, i) => i + 1);
+    const routines = {
+      "Morning (04.30 – 12.00)": [
+        ["04.30 – 05.30", "Sholat Subuh, dzikir pagi, baca Qur’an"],
+        ["05.30 – 06.30", "Mandi pagi dan olahraga ringan"],
+        ["06.30 – 07.30", "Sarapan dan minum air putih"],
+        ["07.30 – 09.00", "Trading Pagi (analisa dan entry)"],
+        ["09.00 – 11.30", "Aktivitas produktif (belajar atau kerja ringan)"],
+        ["11.30 – 12.00", "Persiapan Sholat Dzuhur"]
+      ],
+      "Afternoon (12.00 – 17.30)": [
+        ["12.00 – 13.00", "Sholat Dzuhur dan makan siang"],
+        ["13.00 – 14.30", "Tidur siang"],
+        ["14.30 – 15.30", "Aktivitas santai produktif"],
+        ["15.30 – 16.00", "Sholat Ashar"],
+        ["16.00 – 16.30", "Mandi sore"],
+        ["16.30 – 17.30", "Trading Sore (eksekusi dan catatan hasil)"]
+      ],
+      "Evening (17.30 – 21.30)": [
+        ["17.30 – 18.30", "Santai atau refleksi pribadi"],
+        ["18.30 – 19.30", "Sholat Maghrib, dzikir, dan makan malam"],
+        ["19.30 – 20.00", "Sholat Isya"],
+        ["20.00 – 21.00", "Jurnal harian (trading dan refleksi diri)"],
+        ["21.00 – 21.30", "Relaksasi tanpa gadget"],
+        ["21.30 – 04.30", "Tidur malam"]
+      ]
     };
 
-    function toggleRoutine() {
-      const date = document.getElementById("datePicker").value;
-      const list = document.getElementById("routineList");
-      const toggleBtn = document.getElementById("toggleBtn");
+    const savedChecks = JSON.parse(localStorage.getItem('dailyRoutineChecks') || '{}');
+    const container = document.getElementById('routineContainer');
 
-      if (!date) {
-        alert("Silakan pilih tanggal terlebih dahulu!");
-        return;
-      }
+    Object.entries(routines).forEach(([title, activities]) => {
+      const section = document.createElement('section');
+      const h2 = document.createElement('h2');
+      h2.textContent = title;
+      section.appendChild(h2);
 
-      const isHidden = list.classList.contains("hidden");
+      const table = document.createElement('table');
+      const thead = document.createElement('thead');
+      const headRow = document.createElement('tr');
+      headRow.innerHTML = `<th>Waktu</th><th>Aktivitas</th>` + days.map(d => `<th>${d}</th>`).join('');
+      thead.appendChild(headRow);
+      table.appendChild(thead);
 
-      if (isHidden) {
-        loadChecklist(date);
-        list.classList.remove("hidden");
-        toggleBtn.textContent = "Sembunyikan";
-        spawnEmoji("💗");
-      } else {
-        list.classList.add("hidden");
-        toggleBtn.textContent = "Tampilkan";
-      }
-    }
-
-    function loadChecklist(date) {
-      const saved = JSON.parse(localStorage.getItem("skincare_" + date)) || {};
-      Object.keys(routineLabels).forEach(id => {
-        document.getElementById(id).checked = saved[id] || false;
-        document.getElementById(id).onchange = () => saveChecklist(date);
-      });
-    }
-
-    function saveChecklist(date) {
-      const ids = Object.keys(routineLabels);
-      const data = {};
-      let hasAny = false;
-      ids.forEach(id => {
-        const checked = document.getElementById(id).checked;
-        data[id] = checked;
-        if (checked) hasAny = true;
+      const tbody = document.createElement('tbody');
+      activities.forEach(([time, task], i) => {
+        const row = document.createElement('tr');
+        row.innerHTML = `<td class="time">${time}</td><td class="task">${task}</td>`;
+        days.forEach(day => {
+          const cell = document.createElement('td');
+          const checkbox = document.createElement('input');
+          const key = `${title}-${i}-${day}`;
+          checkbox.type = 'checkbox';
+          checkbox.checked = !!savedChecks[key];
+          checkbox.addEventListener('change', () => {
+            savedChecks[key] = checkbox.checked;
+            localStorage.setItem('dailyRoutineChecks', JSON.stringify(savedChecks));
+          });
+          cell.appendChild(checkbox);
+          row.appendChild(cell);
+        });
+        tbody.appendChild(row);
       });
 
-      if (hasAny) {
-        localStorage.setItem("skincare_" + date, JSON.stringify(data));
-      } else {
-        localStorage.removeItem("skincare_" + date);
-      }
-    }
+      table.appendChild(tbody);
+      section.appendChild(table);
+      container.appendChild(section);
+    });
 
-    function toggleMonthlyRecap() {
-      const recapDiv = document.getElementById("monthlyRecap");
-      const rekapBtn = document.getElementById("rekapBtn");
-
-      if (!recapDiv.classList.contains("hidden")) {
-        recapDiv.classList.add("hidden");
-        rekapBtn.textContent = "Rekap Bulanan";
-        return;
-      }
-
-      showMonthlyRecap();
-      rekapBtn.textContent = "Sembunyikan Rekap";
-      spawnEmoji("💕");
-    }
-
-    function showMonthlyRecap() {
-      const now = new Date();
-      const month = now.toISOString().slice(0, 7);
-      const color1 = "#ffe4ec";
-      const color2 = "#ffc1d6";
-      let useFirstColor = true;
-      let output = `<strong>Rekap Bulan ${month}</strong><br>`;
-      let foundData = false;
-
-      for (let i = 1; i <= 31; i++) {
-        const day = i.toString().padStart(2, '0');
-        const dateKey = `${month}-${day}`;
-        const data = JSON.parse(localStorage.getItem("skincare_" + dateKey));
-        if (data) {
-          const anyChecked = Object.values(data).some(v => v === true);
-          if (!anyChecked) continue;
-
-          const bgColor = useFirstColor ? color1 : color2;
-          useFirstColor = !useFirstColor;
-          foundData = true;
-
-          output += `<div style="background-color:${bgColor}; padding:10px; margin-top:10px; border-radius:10px;">`;
-          output += `<strong>Tanggal ${day}</strong><ul>`;
-          for (let key in routineLabels) {
-            const label = routineLabels[key];
-            output += data[key]
-              ? `<li>${label}</li>`
-              : `<li class="missed">${label} (belum dilakukan)</li>`;
-          }
-          output += `</ul></div>`;
-        }
-      }
-
-      const recapDiv = document.getElementById("monthlyRecap");
-      recapDiv.innerHTML = foundData ? output : "Tidak ada data untuk bulan ini.";
-      recapDiv.classList.remove("hidden");
-    }
-
-    function spawnEmoji(emoji) {
-      const emojiEl = document.createElement("div");
-      emojiEl.className = "emoji";
-      emojiEl.style.left = Math.random() * 90 + "%";
-      emojiEl.style.top = "60%";
-      emojiEl.textContent = emoji;
-      document.body.appendChild(emojiEl);
-
-      setTimeout(() => {
-        emojiEl.remove();
-      }, 2000);
-    }
-
-    // Tambahkan ini di akhir script
+    // PWA SW
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('service-worker.js')
-        .then(() => console.log('Service Worker registered'));
+        .then(() => console.log('Service Worker Registered'));
     }
   </script>
 </body>
