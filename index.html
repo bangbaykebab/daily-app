@@ -5,6 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Daily Routine</title>
   <style>
+	  .color-sample {
+	  width: 30px;
+	  height: 30px;
+	  border: none;
+	  margin-right: 5px;
+	  cursor: pointer;
+	  border-radius: 5px;
+	}
     body {
       background-color: #121212;
       color: #fff;
@@ -117,11 +125,20 @@
   <div id="settingsMenu" style="display: none; background: #1f1f1f; padding: 10px; border-radius: 10px; margin-top: 5px;">
     <button onclick="toggleColorOptions()" style="background: #00cec9; border: none; color: white; padding: 5px 10px; border-radius: 6px; cursor: pointer;">Ubah Warna</button>
     <div id="colorOptions" style="margin-top: 10px; display: none;">
-      <button onclick="setTheme('#121212', '#00cec9')" style="background: #00cec9; width: 30px; height: 30px; border: none; margin-right: 5px; cursor: pointer;"></button>
-      <button onclick="setTheme('#1e272e', '#f39c12')" style="background: #f39c12; width: 30px; height: 30px; border: none; margin-right: 5px; cursor: pointer;"></button>
-      <button onclick="setTheme('#2c2c54', '#ff6b81')" style="background: #ff6b81; width: 30px; height: 30px; border: none; margin-right: 5px; cursor: pointer;"></button>
-      <button onclick="setTheme('#0f2027', '#2ecc71')" style="background: #2ecc71; width: 30px; height: 30px; border: none; cursor: pointer;"></button>
-    </div>
+	
+	<!-- Hijau cerah -->
+	<button class="color-sample" onclick="setTheme('#e8fff1', '#27ae60')" style="background: #2ecc71;"></button>
+
+	<!-- Kuning cerah -->
+	<button class="color-sample" onclick="setTheme('#fffbe6', '#f39c12')" style="background: #f1c40f;"></button>
+
+	<!-- Merah muda cerah -->
+	<button class="color-sample" onclick="setTheme('#ffecec', '#e74c3c')" style="background: #e74c3c;"></button>
+
+	<!-- Biru cerah -->
+	<button class="color-sample" onclick="setTheme('#eaf4ff', '#2980b9')" style="background: #3498db;"></button>
+
+	</div>
   </div>
 </div>
 
@@ -211,7 +228,7 @@
     tambahBaris();
 	
 	
-	function toggleSettings() {
+function toggleSettings() {
   const menu = document.getElementById('settingsMenu');
   menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
 }
@@ -221,15 +238,19 @@ function toggleColorOptions() {
   options.style.display = options.style.display === 'none' ? 'flex' : 'none';
 }
 
-function setTheme(bgColor, accentColor) {
+function setTheme(bgColor, tambahBarisColor) {
   document.body.style.backgroundColor = bgColor;
+
+  // Ubah hanya tombol "Tambah Baris"
   document.querySelectorAll('.tambah-baris').forEach(btn => {
-    btn.style.background = `linear-gradient(135deg, ${accentColor}, ${accentColor})`;
-  });
-  document.querySelectorAll('.hapus-baris').forEach(btn => {
-    btn.style.backgroundColor = '#d63031'; // tetap merah
+    btn.style.backgroundColor = tambahBarisColor;
+    btn.style.color = 'white';
+    btn.style.border = 'none';
   });
 }
+
+
+
 
 
   </script>
