@@ -2,104 +2,126 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Daily Routine</title>
-  <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#ffffff">
-  <link rel="icon" href="icons/icon-192.png" sizes="192x192">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Daily Routine Checklist</title>
   <style>
-    body { font-family: 'Georgia', serif; padding: 20px; background: #fffdf9; }
-    h1 { text-align: center; font-size: 2em; margin-bottom: 10px; }
-    h2 { margin-top: 30px; font-size: 1.5em; color: #333; }
-    table { width: 100%; border-collapse: collapse; margin-bottom: 30px; }
-    th, td { border: 1px solid #ddd; text-align: center; padding: 6px; font-size: 0.85em; }
-    th { background: #f7f7f7; font-weight: bold; }
-    td.time { white-space: nowrap; background: #fcfcfc; }
-    td.task { text-align: left; background: #fcfcfc; }
-    input[type="checkbox"] { transform: scale(1.1); }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      margin: 20px;
+      background: #fefdfb;
+    }
+    h1 {
+      text-align: center;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 8px;
+      text-align: center;
+      vertical-align: top;
+    }
+    th {
+      background-color: #fafafa;
+      font-weight: bold;
+    }
+    td input[type="text"] {
+      width: 100%;
+      border: none;
+      background: transparent;
+      text-align: left;
+      word-wrap: break-word;
+      white-space: normal;
+    }
+    input:focus {
+      outline: none;
+    }
+    .btn-container {
+      margin-top: 15px;
+      text-align: center;
+    }
+    button {
+      padding: 10px 15px;
+      font-size: 14px;
+      border: none;
+      background-color: #333;
+      color: white;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #555;
+    }
+
+    /* Kolom Aktivitas lebih lebar dan teks membungkus */
+    #routineTable td:nth-child(2),
+    #routineTable th:nth-child(2) {
+      width: 400px;
+      max-width: 400px;
+      white-space: normal;
+      word-wrap: break-word;
+    }
   </style>
 </head>
 <body>
 
   <h1>Daily Routine</h1>
-  <p style="text-align: center;">(Checklist Harian – disimpan otomatis)</p>
-  <div id="routineContainer"></div>
+
+  <table id="routineTable">
+    <thead>
+      <tr>
+        <th>Waktu</th>
+        <th>Aktivitas</th>
+        <!-- Kolom 1 sampai 30 -->
+        <script>
+          for (let i = 1; i <= 30; i++) {
+            document.write(`<th>${i}</th>`);
+          }
+        </script>
+      </tr>
+    </thead>
+    <tbody id="routineBody">
+      <tr>
+        <td><input type="text" placeholder="Contoh: 04:30 - 05:30" /></td>
+        <td><input type="text" placeholder="Masukkan aktivitas" /></td>
+        <!-- 30 checkbox -->
+        <script>
+          for (let i = 1; i <= 30; i++) {
+            document.write(`<td><input type="checkbox" /></td>`);
+          }
+        </script>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="btn-container">
+    <button onclick="tambahBaris()">Tambah Baris</button>
+  </div>
 
   <script>
-    const days = Array.from({ length: 30 }, (_, i) => i + 1);
-    const routines = {
-      "Morning (04.30 – 12.00)": [
-        ["04.30 – 05.30", "Sholat Subuh, dzikir pagi, baca Qur’an"],
-        ["05.30 – 06.30", "Mandi pagi dan olahraga ringan"],
-        ["06.30 – 07.30", "Sarapan dan minum air putih"],
-        ["07.30 – 09.00", "Trading Pagi (analisa dan entry)"],
-        ["09.00 – 11.30", "Aktivitas produktif (belajar atau kerja ringan)"],
-        ["11.30 – 12.00", "Persiapan Sholat Dzuhur"]
-      ],
-      "Afternoon (12.00 – 17.30)": [
-        ["12.00 – 13.00", "Sholat Dzuhur dan makan siang"],
-        ["13.00 – 14.30", "Tidur siang"],
-        ["14.30 – 15.30", "Aktivitas santai produktif"],
-        ["15.30 – 16.00", "Sholat Ashar"],
-        ["16.00 – 16.30", "Mandi sore"],
-        ["16.30 – 17.30", "Trading Sore (eksekusi dan catatan hasil)"]
-      ],
-      "Evening (17.30 – 21.30)": [
-        ["17.30 – 18.30", "Santai atau refleksi pribadi"],
-        ["18.30 – 19.30", "Sholat Maghrib, dzikir, dan makan malam"],
-        ["19.30 – 20.00", "Sholat Isya"],
-        ["20.00 – 21.00", "Jurnal harian (trading dan refleksi diri)"],
-        ["21.00 – 21.30", "Relaksasi tanpa gadget"],
-        ["21.30 – 04.30", "Tidur malam"]
-      ]
-    };
+    function tambahBaris() {
+      const tbody = document.getElementById("routineBody");
+      const row = document.createElement("tr");
 
-    const savedChecks = JSON.parse(localStorage.getItem('dailyRoutineChecks') || '{}');
-    const container = document.getElementById('routineContainer');
+      const waktuCell = document.createElement("td");
+      waktuCell.innerHTML = `<input type="text" placeholder="Contoh: 04:30 - 05:30" />`;
+      row.appendChild(waktuCell);
 
-    Object.entries(routines).forEach(([title, activities]) => {
-      const section = document.createElement('section');
-      const h2 = document.createElement('h2');
-      h2.textContent = title;
-      section.appendChild(h2);
+      const aktivitasCell = document.createElement("td");
+      aktivitasCell.innerHTML = `<input type="text" placeholder="Masukkan aktivitas" />`;
+      row.appendChild(aktivitasCell);
 
-      const table = document.createElement('table');
-      const thead = document.createElement('thead');
-      const headRow = document.createElement('tr');
-      headRow.innerHTML = `<th>Waktu</th><th>Aktivitas</th>` + days.map(d => `<th>${d}</th>`).join('');
-      thead.appendChild(headRow);
-      table.appendChild(thead);
+      for (let i = 1; i <= 30; i++) {
+        const checkCell = document.createElement("td");
+        checkCell.innerHTML = `<input type="checkbox" />`;
+        row.appendChild(checkCell);
+      }
 
-      const tbody = document.createElement('tbody');
-      activities.forEach(([time, task], i) => {
-        const row = document.createElement('tr');
-        row.innerHTML = `<td class="time">${time}</td><td class="task">${task}</td>`;
-        days.forEach(day => {
-          const cell = document.createElement('td');
-          const checkbox = document.createElement('input');
-          const key = `${title}-${i}-${day}`;
-          checkbox.type = 'checkbox';
-          checkbox.checked = !!savedChecks[key];
-          checkbox.addEventListener('change', () => {
-            savedChecks[key] = checkbox.checked;
-            localStorage.setItem('dailyRoutineChecks', JSON.stringify(savedChecks));
-          });
-          cell.appendChild(checkbox);
-          row.appendChild(cell);
-        });
-        tbody.appendChild(row);
-      });
-
-      table.appendChild(tbody);
-      section.appendChild(table);
-      container.appendChild(section);
-    });
-
-    // PWA SW
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('service-worker.js')
-        .then(() => console.log('Service Worker Registered'));
+      tbody.appendChild(row);
     }
   </script>
+
 </body>
 </html>
