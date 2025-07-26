@@ -1,125 +1,88 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Daily Routine</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
-	.color-sample {
-	  width: 30px;
-	  height: 30px;
-	  border: none;
-	  border-radius: 5px;
-	  cursor: pointer;
-	}
     body {
       background-color: #121212;
       color: #fff;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      margin: 20px;
+      font-family: -apple-system, BlinkMacSystemFont, Roboto, "Segoe UI", sans-serif;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h1, h2 {
+      text-align: center;
+      margin: 0;
+    }
+
+    h1 {
+      font-size: 24px;
+    }
+
+    h2 {
+      font-size: 16px;
+      font-weight: normal;
+      color: #ccc;
+    }
+
+    .tambah-baris {
+      width: 100%;
+      margin-top: 15px;
+      background-color: #2a2a2a;
+      color: white;
+      padding: 12px;
+      font-size: 16px;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
     }
 
     table {
-      width: 125%;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      border-spacing: 0;
       border-collapse: collapse;
-      margin-top: 20px;
-      border-radius: 12px;
-      overflow: hidden;
-      box-shadow: 0 0 10px rgba(255, 255, 255, 0.05);
+      margin-top: 15px;
     }
 
     th, td {
+      padding: 8px;
       border: 1px solid #2a2a2a;
-      padding: 10px;
       text-align: center;
-    }
-
-    th {
-      background-color: #1f1f1f;
-      font-weight: bold;
-    }
-
-    th.waktu, td.waktu {
-      width: 200px;
-    }
-
-    th.aktivitas, td.aktivitas {
-    width: 1000px;
-    text-align: center;
-    vertical-align: middle;
-    }
-
-
-    th.hari, td.hari {
-      width: 20px;
-    }
-
-    th.persen, td.persen {
-      width: 100px;
-      color: #00cec9;
-      font-weight: bold;
-    }
-
-    th.aksi, td.aksi {
-      width: 90px;
+      font-size: 14px;
     }
 
     input[type="text"] {
       width: 100%;
-      background-color: #222;
+      background: #1c1c1c;
       color: white;
       border: 1px solid #444;
       border-radius: 6px;
       padding: 6px 8px;
-      box-sizing: border-box;
     }
-
-    input[type="text"]::placeholder {
-      color: #aaa;
-    }
-
-    input[type="checkbox"] {
-      transform: scale(1.2);
-      cursor: pointer;
-    }
-
-    .tambah-baris {
-  margin-top: 20px;
-  background-color: #1f1f1f !important;
-  color: white !important;
-  padding: 10px 20px;
-  font-size: 16px;
-  border: 1px solid #2a2a2a;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: background 0.3s ease;
-}
-
-.tambah-baris:hover {
-  background-color: #2a2a2a !important;
-}
-
-
 
     .hapus-baris {
-      background-color: #d63031;
+      background-color: #e74c3c;
       color: white;
+      padding: 6px 10px;
       border: none;
-      padding: 6px 12px;
-      border-radius: 6px;
-      cursor: pointer;
-      transition: background 0.3s ease;
+      border-radius: 8px;
+      font-size: 13px;
     }
 
-    .hapus-baris:hover {
-      background-color: #ff7675;
+    /* Scroll style mobile */
+    table::-webkit-scrollbar {
+      height: 6px;
     }
-
-    tr:hover {
-      background-color: #1f1f1f;
+    table::-webkit-scrollbar-thumb {
+      background-color: #444;
+      border-radius: 3px;
     }
   </style>
 </head>
+
 <body>
 <div style="position: absolute; top: 20px; left: 20px;">
   <button onclick="toggleSettings()" style="font-size: 28px; background: none; border: none; color: white; cursor: pointer;">⚙️</button>
@@ -134,6 +97,23 @@
 	<button class="color-sample" onclick="setTheme('#ffecec', '#ffecec')" style="background: #ffecec;"></button>
 	<!-- Biru -->
 	<button class="color-sample" onclick="setTheme('#eaf4ff', '#eaf4ff')" style="background: #eaf4ff;"></button>
+	<!-- Biru Langit -->
+	<button class="color-sample" onclick="setTheme('#87CEFA', '#4682B4')" style="background: #87CEFA;"></button>
+	<!-- Hijau Muda -->
+	<button class="color-sample" onclick="setTheme('#90EE90', '#2E8B57')" style="background: #90EE90;"></button>
+	<!-- Kuning Cerah -->
+	<button class="color-sample" onclick="setTheme('#FFFF99', '#B8860B')" style="background: #FFFF99;"></button>
+	<!-- Ungu Muda -->
+	<button class="color-sample" onclick="setTheme('#DDA0DD', '#800080')" style="background: #DDA0DD;"></button>
+	<!-- Pink Pastel -->
+	<button class="color-sample" onclick="setTheme('#FFB6C1', '#C71585')" style="background: #FFB6C1;"></button>
+	<!-- Oranye Terang -->
+	<button class="color-sample" onclick="setTheme('#FFD580', '#FF8C00')" style="background: #FFD580;"></button>
+	<!-- Merah Muda -->
+	<button class="color-sample" onclick="setTheme('#FF9999', '#8B0000')" style="background: #FF9999;"></button>
+	<!-- Mint -->
+	<button class="color-sample" onclick="setTheme('#AAF0D1', '#228B22')" style="background: #AAF0D1;"></button>
+
 	</div>
   </div>
 </div>
