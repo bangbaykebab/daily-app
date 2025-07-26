@@ -2,125 +2,236 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Daily Routine Checklist</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Daily Routine</title>
   <style>
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background-color: #121212;
+      color: #fff;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       margin: 20px;
-      background: #fefdfb;
-    }
-    h1 {
-      text-align: center;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-    th, td {
-      border: 1px solid #ccc;
-      padding: 8px;
-      text-align: center;
-      vertical-align: top;
-    }
-    th {
-      background-color: #fafafa;
-      font-weight: bold;
-    }
-    td input[type="text"] {
-      width: 100%;
-      border: none;
-      background: transparent;
-      text-align: left;
-      word-wrap: break-word;
-      white-space: normal;
-    }
-    input:focus {
-      outline: none;
-    }
-    .btn-container {
-      margin-top: 15px;
-      text-align: center;
-    }
-    button {
-      padding: 10px 15px;
-      font-size: 14px;
-      border: none;
-      background-color: #333;
-      color: white;
-      border-radius: 8px;
-      cursor: pointer;
-    }
-    button:hover {
-      background-color: #555;
     }
 
-    /* Kolom Aktivitas lebih lebar dan teks membungkus */
-    #routineTable td:nth-child(2),
-    #routineTable th:nth-child(2) {
-      width: 400px;
-      max-width: 400px;
-      white-space: normal;
-      word-wrap: break-word;
+    table {
+      width: 125%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.05);
+    }
+
+    th, td {
+      border: 1px solid #2a2a2a;
+      padding: 10px;
+      text-align: center;
+    }
+
+    th {
+      background-color: #1f1f1f;
+      font-weight: bold;
+    }
+
+    th.waktu, td.waktu {
+      width: 200px;
+    }
+
+    th.aktivitas, td.aktivitas {
+    width: 1000px;
+    text-align: center;
+    vertical-align: middle;
+    }
+
+
+    th.hari, td.hari {
+      width: 20px;
+    }
+
+    th.persen, td.persen {
+      width: 100px;
+      color: #00cec9;
+      font-weight: bold;
+    }
+
+    th.aksi, td.aksi {
+      width: 90px;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      background-color: #222;
+      color: white;
+      border: 1px solid #444;
+      border-radius: 6px;
+      padding: 6px 8px;
+      box-sizing: border-box;
+    }
+
+    input[type="text"]::placeholder {
+      color: #aaa;
+    }
+
+    input[type="checkbox"] {
+      transform: scale(1.2);
+      cursor: pointer;
+    }
+
+    .tambah-baris {
+      margin-top: 20px;
+      background: linear-gradient(135deg, #00b894, #00cec9);
+      color: white;
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .tambah-baris:hover {
+      background: linear-gradient(135deg, #00cec9, #00b894);
+    }
+
+    .hapus-baris {
+      background-color: #d63031;
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .hapus-baris:hover {
+      background-color: #ff7675;
+    }
+
+    tr:hover {
+      background-color: #1f1f1f;
     }
   </style>
 </head>
 <body>
+<div style="position: absolute; top: 20px; left: 20px;">
+  <button onclick="toggleSettings()" style="font-size: 28px; background: none; border: none; color: white; cursor: pointer;">⚙️</button>
+  <div id="settingsMenu" style="display: none; background: #1f1f1f; padding: 10px; border-radius: 10px; margin-top: 5px;">
+    <button onclick="toggleColorOptions()" style="background: #00cec9; border: none; color: white; padding: 5px 10px; border-radius: 6px; cursor: pointer;">Ubah Warna</button>
+    <div id="colorOptions" style="margin-top: 10px; display: none;">
+      <button onclick="setTheme('#121212', '#00cec9')" style="background: #00cec9; width: 30px; height: 30px; border: none; margin-right: 5px; cursor: pointer;"></button>
+      <button onclick="setTheme('#1e272e', '#f39c12')" style="background: #f39c12; width: 30px; height: 30px; border: none; margin-right: 5px; cursor: pointer;"></button>
+      <button onclick="setTheme('#2c2c54', '#ff6b81')" style="background: #ff6b81; width: 30px; height: 30px; border: none; margin-right: 5px; cursor: pointer;"></button>
+      <button onclick="setTheme('#0f2027', '#2ecc71')" style="background: #2ecc71; width: 30px; height: 30px; border: none; cursor: pointer;"></button>
+    </div>
+  </div>
+</div>
 
-  <h1>Daily Routine</h1>
 
-  <table id="routineTable">
+
+  <h1 style="text-align:center; font-size: 36px; margin-bottom: 5px;">DAILY ROUTINE</h1>
+  <h2 style="text-align:center; font-size: 20px; font-weight: normal; color: #ccc; margin-top: 0;">challenge 30 day</h2>
+  
+  <table id="rutinTable">
     <thead>
       <tr>
-        <th>Waktu</th>
-        <th>Aktivitas</th>
-        <!-- Kolom 1 sampai 30 -->
-        <script>
-          for (let i = 1; i <= 30; i++) {
-            document.write(`<th>${i}</th>`);
-          }
-        </script>
+        <th class="waktu">TIME</th>
+        <th class="aktivitas">ACTIVITY</th>
+        <!-- Kolom 1–30 akan ditambahkan dengan JS -->
+        <th class="persen">PERSENTASE</th>
+        <th class="aksi">AKSI</th>
       </tr>
     </thead>
-    <tbody id="routineBody">
-      <tr>
-        <td><input type="text" placeholder="Contoh: 04:30 - 05:30" /></td>
-        <td><input type="text" placeholder="Masukkan aktivitas" /></td>
-        <!-- 30 checkbox -->
-        <script>
-          for (let i = 1; i <= 30; i++) {
-            document.write(`<td><input type="checkbox" /></td>`);
-          }
-        </script>
-      </tr>
+    <tbody id="tableBody">
+      <!-- Baris akan ditambahkan dengan JS -->
     </tbody>
   </table>
 
-  <div class="btn-container">
-    <button onclick="tambahBaris()">Tambah Baris</button>
-  </div>
+  <button class="tambah-baris" onclick="tambahBaris()">+ Tambah Baris</button>
 
   <script>
+    const headerRow = document.querySelector("thead tr");
+    for (let i = 1; i <= 30; i++) {
+      const th = document.createElement('th');
+      th.className = 'hari';
+      th.textContent = i;
+      headerRow.insertBefore(th, headerRow.querySelector('.persen'));
+    }
+
+    function hitungPersentase(tr) {
+      const checkboxes = tr.querySelectorAll('td.hari input[type="checkbox"]');
+      const total = checkboxes.length;
+      const tercentang = Array.from(checkboxes).filter(cb => cb.checked).length;
+      const persen = ((tercentang / total) * 100).toFixed(0) + '%';
+      tr.querySelector('td.persen').textContent = persen;
+    }
+
     function tambahBaris() {
-      const tbody = document.getElementById("routineBody");
-      const row = document.createElement("tr");
+      const tbody = document.getElementById('tableBody');
+      const tr = document.createElement('tr');
 
-      const waktuCell = document.createElement("td");
-      waktuCell.innerHTML = `<input type="text" placeholder="Contoh: 04:30 - 05:30" />`;
-      row.appendChild(waktuCell);
+      const tdWaktu = document.createElement('td');
+      tdWaktu.className = 'waktu';
+      tdWaktu.innerHTML = '<input type="text" placeholder="Add time" />';
+      tr.appendChild(tdWaktu);
 
-      const aktivitasCell = document.createElement("td");
-      aktivitasCell.innerHTML = `<input type="text" placeholder="Masukkan aktivitas" />`;
-      row.appendChild(aktivitasCell);
+      const tdAktivitas = document.createElement('td');
+      tdAktivitas.className = 'aktivitas';
+      tdAktivitas.innerHTML = '<input type="text" placeholder="Add activity" />';
+      tr.appendChild(tdAktivitas);
 
       for (let i = 1; i <= 30; i++) {
-        const checkCell = document.createElement("td");
-        checkCell.innerHTML = `<input type="checkbox" />`;
-        row.appendChild(checkCell);
+        const tdHari = document.createElement('td');
+        tdHari.className = 'hari';
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.addEventListener('change', () => hitungPersentase(tr));
+        tdHari.appendChild(checkbox);
+        tr.appendChild(tdHari);
       }
 
-      tbody.appendChild(row);
+      const tdPersen = document.createElement('td');
+      tdPersen.className = 'persen';
+      tdPersen.textContent = '0%';
+      tr.appendChild(tdPersen);
+
+      const tdAksi = document.createElement('td');
+      tdAksi.className = 'aksi';
+      tdAksi.innerHTML = `<button class="hapus-baris" onclick="hapusBaris(this)">Delete</button>`;
+      tr.appendChild(tdAksi);
+
+      tbody.appendChild(tr);
     }
+
+    function hapusBaris(button) {
+      if (confirm("Apakah kamu yakin ingin menghapus baris ini?")) {
+        const row = button.closest('tr');
+        row.remove();
+      }
+    }
+
+    tambahBaris();
+	
+	
+	function toggleSettings() {
+  const menu = document.getElementById('settingsMenu');
+  menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
+}
+
+function toggleColorOptions() {
+  const options = document.getElementById('colorOptions');
+  options.style.display = options.style.display === 'none' ? 'flex' : 'none';
+}
+
+function setTheme(bgColor, accentColor) {
+  document.body.style.backgroundColor = bgColor;
+  document.querySelectorAll('.tambah-baris').forEach(btn => {
+    btn.style.background = `linear-gradient(135deg, ${accentColor}, ${accentColor})`;
+  });
+  document.querySelectorAll('.hapus-baris').forEach(btn => {
+    btn.style.backgroundColor = '#d63031'; // tetap merah
+  });
+}
+
+
   </script>
 
 </body>
