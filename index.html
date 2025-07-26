@@ -5,13 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Daily Routine</title>
   <style>
-	  .color-sample {
+	.color-sample {
 	  width: 30px;
 	  height: 30px;
 	  border: none;
-	  margin-right: 5px;
-	  cursor: pointer;
 	  border-radius: 5px;
+	  cursor: pointer;
 	}
     body {
       background-color: #121212;
@@ -85,20 +84,21 @@
     }
 
     .tambah-baris {
-      margin-top: 20px;
-      background: linear-gradient(135deg, #00b894, #00cec9);
-      color: white;
-      padding: 10px 20px;
-      font-size: 16px;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-      transition: background 0.3s ease;
-    }
+	  margin-top: 20px;
+	  background-color: #000; /* warna hitam */
+	  color: white;
+	  padding: 10px 20px;
+	  font-size: 16px;
+	  border: none;
+	  border-radius: 10px;
+	  cursor: pointer;
+	  transition: background 0.3s ease;
+	}
 
-    .tambah-baris:hover {
-      background: linear-gradient(135deg, #00cec9, #00b894);
-    }
+	.tambah-baris:hover {
+	  background-color: #222; /* warna hitam sedikit lebih terang saat hover */
+	}
+
 
     .hapus-baris {
       background-color: #d63031;
@@ -125,19 +125,14 @@
   <div id="settingsMenu" style="display: none; background: #1f1f1f; padding: 10px; border-radius: 10px; margin-top: 5px;">
     <button onclick="toggleColorOptions()" style="background: #00cec9; border: none; color: white; padding: 5px 10px; border-radius: 6px; cursor: pointer;">Ubah Warna</button>
     <div id="colorOptions" style="margin-top: 10px; display: none;">
-	
-	<!-- Hijau cerah -->
-	<button class="color-sample" onclick="setTheme('#e8fff1', '#27ae60')" style="background: #2ecc71;"></button>
-
-	<!-- Kuning cerah -->
-	<button class="color-sample" onclick="setTheme('#fffbe6', '#f39c12')" style="background: #f1c40f;"></button>
-
-	<!-- Merah muda cerah -->
+	<!-- Hijau -->
+	<button class="color-sample" onclick="setTheme('#e8fff1', '#2ecc71')" style="background: #2ecc71;"></button>
+	<!-- Kuning -->
+	<button class="color-sample" onclick="setTheme('#fffbe6', '#f1c40f')" style="background: #f1c40f;"></button>
+	<!-- Merah Muda -->
 	<button class="color-sample" onclick="setTheme('#ffecec', '#e74c3c')" style="background: #e74c3c;"></button>
-
-	<!-- Biru cerah -->
-	<button class="color-sample" onclick="setTheme('#eaf4ff', '#2980b9')" style="background: #3498db;"></button>
-
+	<!-- Biru -->
+	<button class="color-sample" onclick="setTheme('#eaf4ff', '#3498db')" style="background: #3498db;"></button>
 	</div>
   </div>
 </div>
@@ -238,18 +233,28 @@ function toggleColorOptions() {
   options.style.display = options.style.display === 'none' ? 'flex' : 'none';
 }
 
-function setTheme(bgColor, tambahBarisColor) {
+function setTheme(bgColor, mainColor) {
   document.body.style.backgroundColor = bgColor;
 
   // Ubah hanya tombol "Tambah Baris"
   document.querySelectorAll('.tambah-baris').forEach(btn => {
-    btn.style.backgroundColor = tambahBarisColor;
+    btn.style.backgroundColor = darkenColor(mainColor, 0.3);
     btn.style.color = 'white';
     btn.style.border = 'none';
   });
 }
 
+function darkenColor(hex, percent) {
+  let r = parseInt(hex.slice(1, 3), 16);
+  let g = parseInt(hex.slice(3, 5), 16);
+  let b = parseInt(hex.slice(5, 7), 16);
 
+  r = Math.max(0, Math.floor(r * (1 - percent)));
+  g = Math.max(0, Math.floor(g * (1 - percent)));
+  b = Math.max(0, Math.floor(b * (1 - percent)));
+
+  return `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
+}
 
 
 
