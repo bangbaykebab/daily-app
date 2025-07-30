@@ -30,29 +30,30 @@
     const days = Array.from({ length: 30 }, (_, i) => i + 1);
     const routines = {
       "Morning (04:30 – 12:00)": [
-        ["04:30 – 05:30", "Fajr prayer, Qur’an reading"],
-        ["05:30 – 07:00", "Exercise, Shower, Learn"],
-        ["07:00 – 07:30", "Breakfast and drink water"],
-        ["07:30 – 08:00", "Dhuha prayer"],
+        ["04:30 – 05:30", "Sholat Subuh, baca Qur’an"],
+        ["05:30 – 07:00", "Olahraga, Mandi, Belajar"],
+        ["07:00 – 07:30", "Sarapan dan minum air putih"],
+        ["07:30 – 08:00", "Sholat duha"],
         ["08:00 – 10:00", "Trading"],
-        ["10:00 – 12:00", "Productive activities"]
+        ["10:00 – 12:00", "Aktivitas produktif"]
       ],
       "Afternoon (12:00 – 17:30)": [
-        ["12:00 – 13:00", "Dhuhr prayer and lunch"],
-        ["13:00 – 14:30", "Nap"],
-        ["14:30 – 15:30", "Light productive activities"],
-        ["15:30 – 16:00", "Asr prayer"],
-        ["16:00 – 16:30", "Shower"],
-        ["16:30 – 18:00", "Relaxation or self-reflection"]
+        ["12:00 – 13:00", "Sholat Dzuhur dan makan siang"],
+        ["13:00 – 14:30", "Tidur siang"],
+        ["14:30 – 15:30", "Aktivitas santai produktif"],
+        ["15:30 – 16:00", "Sholat Ashar"],
+        ["16:00 – 16:30", "Mandi sore"],
+        ["16:30 – 17:30", "Trading Sore"],
+        ["17:30 – 18:30", "Santai atau refleksi pribadi"]
       ],
       "Evening (18:30 – 21:30)": [
-        ["18:30 – 19:30", "Maghrib prayer and dinner"],
-        ["19:30 – 20:00", "Isha prayer"],
-        ["20:00 – 21:00", "Daily journaling, Relaxation"],
-        ["21:00 – 21:30", "Relaxation without gadgets"],
-        ["21:30 – 02:30", "Night sleep"],
-        ["02:30 – 03:00", "Night prayer"],
-        ["03:00 – 04:30", "Continue sleeping"]
+        ["18:30 – 19:30", "Sholat Maghrib dan makan malam"],
+        ["19:30 – 20:00", "Sholat Isya"],
+        ["20:00 – 21:00", "Jurnal harian"],
+        ["21:00 – 21:30", "Relaksasi tanpa gadget"],
+        ["21:30 – 02:30", "Tidur malam"],
+        ["02:30 – 03:00", "Sholat malam"],
+        ["03:00 – 04:30", "Lanjut tidur"]
       ]
     };
 
@@ -97,7 +98,6 @@
           row.appendChild(cell);
         });
 
-        // Kolom Persentase
         const percentCell = document.createElement('td');
         percentCell.classList.add('percent-cell');
 
@@ -106,7 +106,7 @@
           percentCell.textContent = Math.round((filled / days.length) * 100) + '%';
         };
 
-        updatePercentage(); // Inisialisasi
+        updatePercentage();
         row.appendChild(percentCell);
         tbody.appendChild(row);
       });
@@ -116,7 +116,6 @@
       container.appendChild(section);
     });
 
-    // PWA SW
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('service-worker.js')
         .then(() => console.log('Service Worker Registered'));
