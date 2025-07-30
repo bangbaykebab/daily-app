@@ -1,6 +1,6 @@
 const CACHE_NAME = "daily-routine-cache-v1";
 const urlsToCache = [
-  "index.html",
+  "index.html",1
   "manifest.json",
   "icons/icon-192.png",
   "icons/icon-512.png"
