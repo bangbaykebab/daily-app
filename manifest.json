@@ -1,6 +1,6 @@
 {
   "name": "Daily Routine",
-  "short_name": "Routine",
+  "short_name": "Daily Routine",
   "start_url": "index.html",
   "display": "standalone",
   "background_color": "#fffdf9",
