@@ -1,246 +1,137 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Daily Routine</title>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#ffffff">
+  <link rel="icon" href="icons/icon-192.png" sizes="192x192">
   <style>
-    body {
-      background-color: #121212;
-      color: #fff;
-      font-family: -apple-system, BlinkMacSystemFont, Roboto, "Segoe UI", sans-serif;
-      margin: 0;
-      padding: 20px;
-    }
-
-    h1, h2 {
-      text-align: center;
-      margin: 0;
-    }
-
-    h1 {
-      font-size: 24px;
-    }
-
-    h2 {
-      font-size: 16px;
-      font-weight: normal;
-      color: #ccc;
-    }
-
-    .tambah-baris {
-      width: 100%;
-      margin-top: 15px;
-      background-color: #2a2a2a;
-      color: white;
-      padding: 12px;
-      font-size: 16px;
-      border: none;
-      border-radius: 12px;
-      cursor: pointer;
-    }
-
-    table {
-      width: 100%;
-      overflow-x: auto;
-      display: block;
-      border-spacing: 0;
-      border-collapse: collapse;
-      margin-top: 15px;
-    }
-
-    th, td {
-      padding: 8px;
-      border: 1px solid #2a2a2a;
-      text-align: center;
-      font-size: 14px;
-    }
-
-    input[type="text"] {
-      width: 100%;
-      background: #1c1c1c;
-      color: white;
-      border: 1px solid #444;
-      border-radius: 6px;
-      padding: 6px 8px;
-    }
-
-    .hapus-baris {
-      background-color: #e74c3c;
-      color: white;
-      padding: 6px 10px;
-      border: none;
-      border-radius: 8px;
-      font-size: 13px;
-    }
-
-    /* Scroll style mobile */
-    table::-webkit-scrollbar {
-      height: 6px;
-    }
-    table::-webkit-scrollbar-thumb {
-      background-color: #444;
-      border-radius: 3px;
-    }
+    body { font-family: 'Avenir', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; padding: 20px; background: #fffdf9; }
+    h1 { text-align: center; font-size: 2em; margin-bottom: 10px; }
+    h2 { margin-top: 30px; font-size: 1.5em; color: #333; }
+    table { width: 100%; border-collapse: collapse; margin-bottom: 30px; }
+    th, td { border: 1px solid #ddd; text-align: center; padding: 6px; font-size: 0.85em; }
+    th { background: #f7f7f7; font-weight: bold; }
+    td.time { white-space: nowrap; background: #fcfcfc; }
+    td.task { text-align: left; background: #fcfcfc; }
+    input[type="checkbox"] { transform: scale(1.1); }
+    td.percent-cell { font-weight: bold; background: #f0f0f0; }
   </style>
 </head>
-
 <body>
-<div style="position: absolute; top: 20px; left: 20px;">
-  <button onclick="toggleSettings()" style="font-size: 28px; background: none; border: none; color: white; cursor: pointer;">⚙️</button>
-  <div id="settingsMenu" style="display: none; background: #1f1f1f; padding: 10px; border-radius: 10px; margin-top: 5px;">
-    <button onclick="toggleColorOptions()" style="background: #1f1f1f; border: none; color: white; padding: 5px 10px; border-radius: 6px; cursor: pointer;">Ubah Warna</button>
-    <div id="colorOptions" style="margin-top: 10px; display: none;">
-	<!-- Hijau -->
-	<button class="color-sample" onclick="setTheme('#e8fff1', '#e8fff1')" style="background: #e8fff1;"></button>
-	<!-- Kuning -->
-	<button class="color-sample" onclick="setTheme('#fffbe6', '#fffbe6')" style="background: #fffbe6;"></button>
-	<!-- Merah Muda -->
-	<button class="color-sample" onclick="setTheme('#ffecec', '#ffecec')" style="background: #ffecec;"></button>
-	<!-- Biru -->
-	<button class="color-sample" onclick="setTheme('#eaf4ff', '#eaf4ff')" style="background: #eaf4ff;"></button>
-	<!-- Biru Langit -->
-	<button class="color-sample" onclick="setTheme('#87CEFA', '#4682B4')" style="background: #87CEFA;"></button>
-	<!-- Hijau Muda -->
-	<button class="color-sample" onclick="setTheme('#90EE90', '#2E8B57')" style="background: #90EE90;"></button>
-	<!-- Kuning Cerah -->
-	<button class="color-sample" onclick="setTheme('#FFFF99', '#B8860B')" style="background: #FFFF99;"></button>
-	<!-- Ungu Muda -->
-	<button class="color-sample" onclick="setTheme('#DDA0DD', '#800080')" style="background: #DDA0DD;"></button>
-	<!-- Pink Pastel -->
-	<button class="color-sample" onclick="setTheme('#FFB6C1', '#C71585')" style="background: #FFB6C1;"></button>
-	<!-- Oranye Terang -->
-	<button class="color-sample" onclick="setTheme('#FFD580', '#FF8C00')" style="background: #FFD580;"></button>
-	<!-- Merah Muda -->
-	<button class="color-sample" onclick="setTheme('#FF9999', '#8B0000')" style="background: #FF9999;"></button>
-	<!-- Mint -->
-	<button class="color-sample" onclick="setTheme('#AAF0D1', '#228B22')" style="background: #AAF0D1;"></button>
+<video id="introVideo" autoplay muted playsinline style="position:fixed; top:0; left:0; width:100%; height:100%; object-fit:cover; z-index:9999;">
+  <source src="0730(1).mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
 
-	</div>
-  </div>
-</div>
-
-
-
-  <h1 style="text-align:center; font-size: 36px; margin-bottom: 5px; color: #1f1f1f;">DAILY ROUTINE</h1>
-<h2 style="text-align:center; font-size: 20px; font-weight: normal; margin-top: 0; color: #1f1f1f;">challenge 30 day</h2>
-
-  
-  <table id="rutinTable">
-    <thead>
-      <tr>
-        <th class="waktu">TIME</th>
-        <th class="aktivitas">ACTIVITY</th>
-        <!-- Kolom 1–30 akan ditambahkan dengan JS -->
-        <th class="persen">PERSENTASE</th>
-        <th class="aksi">AKSI</th>
-      </tr>
-    </thead>
-    <tbody id="tableBody">
-      <!-- Baris akan ditambahkan dengan JS -->
-    </tbody>
-  </table>
-
-  <button class="tambah-baris" onclick="tambahBaris()">+ Tambah Baris</button>
+  <h1>DAILY ROUTINE</h1>
+  <p style="text-align: center;">Balya Ibnu Taufik</p>
+  <div id="routineContainer"></div>
 
   <script>
-    const headerRow = document.querySelector("thead tr");
-    for (let i = 1; i <= 30; i++) {
-      const th = document.createElement('th');
-      th.className = 'hari';
-      th.textContent = i;
-      headerRow.insertBefore(th, headerRow.querySelector('.persen'));
+    const days = Array.from({ length: 30 }, (_, i) => i + 1);
+    const routines = {
+      "Morning (04:30 – 12:00)": [
+        ["04:30 – 05:30", "Fajr prayer, Qur’an reading"],
+        ["05:30 – 07:00", "Exercise, Shower, Learn"],
+        ["07:00 – 07:30", "Breakfast and drink water"],
+        ["07:30 – 08:00", "Dhuha prayer"],
+        ["08:00 – 10:00", "Trading"],
+        ["10:00 – 12:00", "Productive activities"]
+      ],
+      "Afternoon (12:00 – 17:30)": [
+        ["12:00 – 13:00", "Dhuhr prayer and lunch"],
+        ["13:00 – 14:30", "Nap"],
+        ["14:30 – 15:30", "Light productive activities"],
+        ["15:30 – 16:00", "Asr prayer"],
+        ["16:00 – 16:30", "Shower"],
+        ["16:30 – 18:00", "Relaxation or self-reflection"]
+      ],
+      "Evening (18:30 – 21:30)": [
+        ["18:30 – 19:30", "Maghrib prayer and dinner"],
+        ["19:30 – 20:00", "Isha prayer"],
+        ["20:00 – 21:00", "Daily journaling, Relaxation"],
+        ["21:00 – 21:30", "Relaxation without gadgets"],
+        ["21:30 – 02:30", "Night sleep"],
+        ["02:30 – 03:00", "Night prayer"],
+        ["03:00 – 04:30", "Continue sleeping"]
+      ]
+    };
+
+    const savedChecks = JSON.parse(localStorage.getItem('dailyRoutineChecks') || '{}');
+    const container = document.getElementById('routineContainer');
+
+    Object.entries(routines).forEach(([title, activities]) => {
+      const section = document.createElement('section');
+      const h2 = document.createElement('h2');
+      h2.textContent = title;
+      section.appendChild(h2);
+
+      const table = document.createElement('table');
+      const thead = document.createElement('thead');
+      const headRow = document.createElement('tr');
+      headRow.innerHTML = `<th>Waktu</th><th>Aktivitas</th>` + days.map(d => `<th>${d}</th>`).join('') + `<th>%</th>`;
+      thead.appendChild(headRow);
+      table.appendChild(thead);
+
+      const tbody = document.createElement('tbody');
+      activities.forEach(([time, task], i) => {
+        const row = document.createElement('tr');
+        row.innerHTML = `<td class="time">${time}</td><td class="task">${task}</td>`;
+
+        const checkboxes = [];
+
+        days.forEach(day => {
+          const cell = document.createElement('td');
+          const checkbox = document.createElement('input');
+          const key = `${title}-${i}-${day}`;
+          checkbox.type = 'checkbox';
+          checkbox.checked = !!savedChecks[key];
+
+          checkbox.addEventListener('change', () => {
+            savedChecks[key] = checkbox.checked;
+            localStorage.setItem('dailyRoutineChecks', JSON.stringify(savedChecks));
+            updatePercentage();
+          });
+
+          checkboxes.push(checkbox);
+          cell.appendChild(checkbox);
+          row.appendChild(cell);
+        });
+
+        // Kolom Persentase
+        const percentCell = document.createElement('td');
+        percentCell.classList.add('percent-cell');
+
+        const updatePercentage = () => {
+          const filled = checkboxes.filter(cb => cb.checked).length;
+          percentCell.textContent = Math.round((filled / days.length) * 100) + '%';
+        };
+
+        updatePercentage(); // Inisialisasi
+        row.appendChild(percentCell);
+        tbody.appendChild(row);
+      });
+
+      table.appendChild(tbody);
+      section.appendChild(table);
+      container.appendChild(section);
+    });
+
+    // PWA SW
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('service-worker.js')
+        .then(() => console.log('Service Worker Registered'));
     }
-
-    function hitungPersentase(tr) {
-      const checkboxes = tr.querySelectorAll('td.hari input[type="checkbox"]');
-      const total = checkboxes.length;
-      const tercentang = Array.from(checkboxes).filter(cb => cb.checked).length;
-      const persen = ((tercentang / total) * 100).toFixed(0) + '%';
-      tr.querySelector('td.persen').textContent = persen;
-    }
-
-    function tambahBaris() {
-      const tbody = document.getElementById('tableBody');
-      const tr = document.createElement('tr');
-
-      const tdWaktu = document.createElement('td');
-      tdWaktu.className = 'waktu';
-      tdWaktu.innerHTML = '<input type="text" placeholder="Add time" />';
-      tr.appendChild(tdWaktu);
-
-      const tdAktivitas = document.createElement('td');
-      tdAktivitas.className = 'aktivitas';
-      tdAktivitas.innerHTML = '<input type="text" placeholder="Add activity" />';
-      tr.appendChild(tdAktivitas);
-
-      for (let i = 1; i <= 30; i++) {
-        const tdHari = document.createElement('td');
-        tdHari.className = 'hari';
-        const checkbox = document.createElement('input');
-        checkbox.type = 'checkbox';
-        checkbox.addEventListener('change', () => hitungPersentase(tr));
-        tdHari.appendChild(checkbox);
-        tr.appendChild(tdHari);
-      }
-
-      const tdPersen = document.createElement('td');
-      tdPersen.className = 'persen';
-      tdPersen.textContent = '0%';
-      tr.appendChild(tdPersen);
-
-      const tdAksi = document.createElement('td');
-      tdAksi.className = 'aksi';
-      tdAksi.innerHTML = `<button class="hapus-baris" onclick="hapusBaris(this)">Delete</button>`;
-      tr.appendChild(tdAksi);
-
-      tbody.appendChild(tr);
-    }
-
-    function hapusBaris(button) {
-      if (confirm("Apakah kamu yakin ingin menghapus baris ini?")) {
-        const row = button.closest('tr');
-        row.remove();
-      }
-    }
-
-    tambahBaris();
 	
-	
-function toggleSettings() {
-  const menu = document.getElementById('settingsMenu');
-  menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
-}
-
-function toggleColorOptions() {
-  const options = document.getElementById('colorOptions');
-  options.style.display = options.style.display === 'none' ? 'flex' : 'none';
-}
-
-function setTheme(bgColor, mainColor) {
-  document.body.style.backgroundColor = bgColor;
-
-  // Ubah hanya tombol "Tambah Baris"
-  document.querySelectorAll('.tambah-baris').forEach(btn => {
-    btn.style.backgroundColor = darkenColor(mainColor, 0.3);
-    btn.style.color = 'white';
-    btn.style.border = 'none';
-  });
-}
-
-function darkenColor(hex, percent) {
-  let r = parseInt(hex.slice(1, 3), 16);
-  let g = parseInt(hex.slice(3, 5), 16);
-  let b = parseInt(hex.slice(5, 7), 16);
-
-  r = Math.max(0, Math.floor(r * (1 - percent)));
-  g = Math.max(0, Math.floor(g * (1 - percent)));
-  b = Math.max(0, Math.floor(b * (1 - percent)));
-
-  return `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
-}
-
-
-
+	  const video = document.getElementById('introVideo');
+	  video.onended = () => {
+		video.style.display = 'none';
+		document.body.style.overflow = 'auto';
+	  };
+  document.body.style.overflow = 'hidden'; // mencegah scroll saat intro
   </script>
-
 </body>
 </html>
