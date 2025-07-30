@@ -1,11 +1,12 @@
 {
   "name": "Daily Routine",
-  "short_name": "Daily Routine",
-  "start_url": ".",
+  "short_name": "Routine",
+  "start_url": "index.html",
   "display": "standalone",
   "background_color": "#fffdf9",
   "theme_color": "#ffffff",
-  "description": "Aplikasi pengecek rutinitas harian Balya Ibnu Taufik",
+  "orientation": "portrait",
+  "description": "Aplikasi checklist rutinitas harian Balya Ibnu Taufik.",
   "icons": [
     {
       "src": "icons/icon-192.png",
