@@ -1,125 +1,138 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Daily Routine</title>
-  <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#ffffff">
-  <link rel="icon" href="icons/icon-192.png" sizes="192x192">
-  <style>
-    body { font-family: 'Avenir', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; padding: 20px; background: #fffdf9; }
-    h1 { text-align: center; font-size: 2em; margin-bottom: 10px; }
-    h2 { margin-top: 30px; font-size: 1.5em; color: #333; }
-    table { width: 100%; border-collapse: collapse; margin-bottom: 30px; }
-    th, td { border: 1px solid #ddd; text-align: center; padding: 6px; font-size: 0.85em; }
-    th { background: #f7f7f7; font-weight: bold; }
-    td.time { white-space: nowrap; background: #fcfcfc; }
-    td.task { text-align: left; background: #fcfcfc; }
-    input[type="checkbox"] { transform: scale(1.1); }
-    td.percent-cell { font-weight: bold; background: #f0f0f0; }
-  </style>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#4caf50">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Time Boxing Day</title>
+<style>
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+        background-color: #f4f6f8;
+        margin: 0;
+        padding: 15px;
+        text-align: center;
+        color: #333;
+    }
+    h1 { font-size: 26px; font-weight: bold; margin-bottom: 6px; color: #222; }
+    h2 { font-size: 14px; color: #666; font-style: italic; margin-top: 0; margin-bottom: 15px; }
+    .table-container { overflow-x: auto; border-radius: 12px; background: #fff; box-shadow: 0 3px 12px rgba(0,0,0,0.05); }
+    table { border-collapse: collapse; min-width: 900px; font-size: 15px; width: 100%; }
+    th, td { padding: 10px; text-align: center; border-bottom: 1px solid #eee; }
+    th { background-color: #e9f0f6; font-weight: 600; position: sticky; top: 0; z-index: 2; }
+    td.text-left { text-align: left; font-weight: 600; white-space: nowrap; }
+    .yellow { color: #d4a017; }
+    .blue { color: #0077cc; }
+    .red { color: #d13f3f; }
+    .green { color: #2d9b2d; }
+    input[type="checkbox"] {
+        appearance: none; -webkit-appearance: none;
+        width: 22px; height: 22px; border: 2px solid #bbb; border-radius: 50%;
+        background-color: white; cursor: pointer; transition: all 0.2s ease;
+    }
+    input[type="checkbox"]:hover { border-color: #888; }
+    input[type="checkbox"]:checked {
+        background-color: #4caf50; border-color: #4caf50; box-shadow: 0 0 5px rgba(76,175,80,0.6);
+    }
+    input[type="checkbox"]:checked::after {
+        content: '✔'; color: white; display: block; text-align: center;
+        font-size: 14px; line-height: 20px;
+    }
+    .persen { font-weight: bold; color: #4caf50; }
+</style>
 </head>
 <body>
 
-  <h1>DAILY ROUTINE</h1>
-  <p style="text-align: center;">Balya Ibnu Taufik</p>
-  <div id="routineContainer"></div>
+<h1>Time Boxing Day</h1>
+<h2>up to grow every day</h2>
 
-  <script>
-    const days = Array.from({ length: 30 }, (_, i) => i + 1);
-    const routines = {
-      "Morning (04:30 – 12:00)": [
-        ["04:30 – 05:30", "Sholat Subuh, baca Qur’an"],
-        ["05:30 – 07:00", "Olahraga, Mandi, Belajar"],
-        ["07:00 – 07:30", "Sarapan dan minum air putih"],
-        ["07:30 – 08:00", "Sholat duha"],
-        ["08:00 – 10:00", "Trading"],
-        ["10:00 – 12:00", "Aktivitas produktif"]
-      ],
-      "Afternoon (12:00 – 17:30)": [
-        ["12:00 – 13:00", "Sholat Dzuhur dan makan siang"],
-        ["13:00 – 14:30", "Tidur siang"],
-        ["14:30 – 15:30", "Aktivitas santai produktif"],
-        ["15:30 – 16:00", "Sholat Ashar"],
-        ["16:00 – 16:30", "Mandi sore"],
-        ["16:30 – 17:30", "Trading Sore"],
-        ["17:30 – 18:30", "Santai atau refleksi pribadi"]
-      ],
-      "Evening (18:30 – 21:30)": [
-        ["18:30 – 19:30", "Sholat Maghrib dan makan malam"],
-        ["19:30 – 20:00", "Sholat Isya"],
-        ["20:00 – 21:00", "Jurnal harian"],
-        ["21:00 – 21:30", "Relaksasi tanpa gadget"],
-        ["21:30 – 02:30", "Tidur malam"],
-        ["02:30 – 03:00", "Sholat malam"],
-        ["03:00 – 04:30", "Lanjut tidur"]
-      ]
-    };
+<div class="table-container">
+<table>
+    <thead>
+        <tr>
+            <th>Kegiatan</th>
+            <script>
+                for (let i = 1; i <= 30; i++) {
+                    document.write(`<th>${i}</th>`);
+                }
+            </script>
+            <th>%</th>
+        </tr>
+    </thead>
+    <tbody>
+        <script>
+            const kegiatan = [
+                { text: "Bangun sebelum fajar", class: "" },
+                { text: "Baca Quran", class: "yellow" },
+                { text: "Olahraga", class: "blue" },
+                { text: "Rekam Latihan Berbicara", class: "red" },
+                { text: "Setoran Kosakata Bahasa Inggris", class: "red" },
+                { text: "Mendengarkan Podcast", class: "red" },
+                { text: "Baca 10 halaman Buku", class: "blue" },
+                { text: "Sholat 5 Waktu", class: "yellow" },
+                { text: "Sholat Sunah (duha/tahajud)", class: "yellow" },
+                { text: "Tidur sebelum Jam 11", class: "" }
+            ];
 
-    const savedChecks = JSON.parse(localStorage.getItem('dailyRoutineChecks') || '{}');
-    const container = document.getElementById('routineContainer');
+            kegiatan.forEach((item, rowIndex) => {
+                document.write(`<tr><td class="text-left ${item.class}">${item.text}</td>`);
+                for (let i = 1; i <= 30; i++) {
+                    let id = `cb-${rowIndex}-${i}`;
+                    document.write(`<td><input type="checkbox" id="${id}" onchange="hitungPersen(this);simpanData();"></td>`);
+                }
+                document.write(`<td class="persen">0%</td></tr>`);
+            });
+        </script>
+    </tbody>
+</table>
+</div>
 
-    Object.entries(routines).forEach(([title, activities]) => {
-      const section = document.createElement('section');
-      const h2 = document.createElement('h2');
-      h2.textContent = title;
-      section.appendChild(h2);
+<script>
+function hitungPersen(checkbox) {
+    const row = checkbox.closest("tr");
+    const ceklis = row.querySelectorAll('input[type="checkbox"]');
+    let jumlah = 0;
+    ceklis.forEach(cb => { if (cb.checked) jumlah++; });
+    const persenCell = row.querySelector(".persen");
+    let persen = Math.round((jumlah / 30) * 100);
+    persenCell.textContent = persen + "%";
+    persenCell.style.color = persen >= 70 ? "#4caf50" : persen >= 40 ? "#ff9800" : "#d13f3f";
+}
 
-      const table = document.createElement('table');
-      const thead = document.createElement('thead');
-      const headRow = document.createElement('tr');
-      headRow.innerHTML = `<th>Waktu</th><th>Aktivitas</th>` + days.map(d => `<th>${d}</th>`).join('') + `<th>%</th>`;
-      thead.appendChild(headRow);
-      table.appendChild(thead);
-
-      const tbody = document.createElement('tbody');
-      activities.forEach(([time, task], i) => {
-        const row = document.createElement('tr');
-        row.innerHTML = `<td class="time">${time}</td><td class="task">${task}</td>`;
-
-        const checkboxes = [];
-
-        days.forEach(day => {
-          const cell = document.createElement('td');
-          const checkbox = document.createElement('input');
-          const key = `${title}-${i}-${day}`;
-          checkbox.type = 'checkbox';
-          checkbox.checked = !!savedChecks[key];
-
-          checkbox.addEventListener('change', () => {
-            savedChecks[key] = checkbox.checked;
-            localStorage.setItem('dailyRoutineChecks', JSON.stringify(savedChecks));
-            updatePercentage();
-          });
-
-          checkboxes.push(checkbox);
-          cell.appendChild(checkbox);
-          row.appendChild(cell);
-        });
-
-        const percentCell = document.createElement('td');
-        percentCell.classList.add('percent-cell');
-
-        const updatePercentage = () => {
-          const filled = checkboxes.filter(cb => cb.checked).length;
-          percentCell.textContent = Math.round((filled / days.length) * 100) + '%';
-        };
-
-        updatePercentage();
-        row.appendChild(percentCell);
-        tbody.appendChild(row);
-      });
-
-      table.appendChild(tbody);
-      section.appendChild(table);
-      container.appendChild(section);
+// Simpan status checkbox ke localStorage
+function simpanData() {
+    const semuaCheckbox = document.querySelectorAll('input[type="checkbox"]');
+    const data = {};
+    semuaCheckbox.forEach(cb => {
+        data[cb.id] = cb.checked;
     });
+    localStorage.setItem("timeBoxingData", JSON.stringify(data));
+}
 
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('service-worker.js')
-        .then(() => console.log('Service Worker Registered'));
-    }
-  </script>
+// Muat data saat halaman dibuka
+function muatData() {
+    const data = JSON.parse(localStorage.getItem("timeBoxingData") || "{}");
+    Object.keys(data).forEach(id => {
+        const cb = document.getElementById(id);
+        if (cb) cb.checked = data[id];
+    });
+    // Update semua persentase
+    document.querySelectorAll("tbody tr").forEach(row => {
+        hitungPersen(row.querySelector('input[type="checkbox"]'));
+    });
+}
+
+document.addEventListener("DOMContentLoaded", muatData);
+</script>
+
+<script>
+if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("service-worker.js")
+        .then(() => console.log("Service Worker registered"))
+        .catch(err => console.error("SW registration failed:", err));
+}
+</script>
+
 </body>
 </html>
